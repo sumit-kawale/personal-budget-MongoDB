@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is an SEO Change (meta(robots tag)) -->
+    <meta name="robots" content="index, archive" />
+    <title>Personal Budget</title>
+    <!-- This is an SEO Change (meta(description)) -->
+    <meta nane="description" content="This personal budget tracker will help you to track your expenses and will help you to manage your budget properly ">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="main.css">
+    <!-- This is an SEO Change (canonical tag) -->    
+    <link rel="canonical" href="http://161.35.119.151/pb/">
+</head>
+<body>
+
+    <!-- This is a Semantic HTML Change(nav) -->
+    <nav class="menu-nav">
+        <ul>
+
+<!-- This is an A11y Change(aria-label) -->
+            <li><a href="/" aria-label="Home page">Home</a></li>
+            <li><a href="/about.html" aria-label="About us">About</a></li>
+            <li><a href="/login.html" aria-label="User Login">Login</a></li>
+            <li><a href="https://google.com" aria-label="Google home page">Google</a></li>
+        </ul>
+    </nav>
+
+<!-- This is an A11y Change(aria-label) -->
+    <div class="hero" aria-label="personal-budget">
+        <h1>Personal Budget</h1>
+        <h2>A personal-budget management app</h2>
+    </div>
+
+    <!-- This is a Semantic HTML Change(main) -->
+    <main class="container center">
+
+    <!-- This is a Semantic HTML Change(article) -->
+        <article class="page-area">
+
+            <div class="text-box">
+                <h1>Stay on track</h1>
+                <p>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Alerts</h1>
+                <p>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Results</h1>
+                <p>
+                    People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    because they know it is all good and accounted for.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Free</h1>
+                <p>
+                    This app is free!!! And you are the only one holding your data!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Stay on track</h1>
+                <p>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Alerts</h1>
+                <p>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Results</h1>
+                <p>
+                    People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    because they know it is all good and accounted for.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Chart</h1>
+                <p>
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </p>
+            </div>
+
+        </article>
+    </main>
+
+    <div class="center">
+        <h1>Chart Using D3JS</h1>
+        <div id="d3chart"></div>
+    </div>
+
+    <!-- This is an A11y Change(Image alt details) -->
+    <div class="container center">
+        <img src="budget.png" alt="Financial Budget" title="Financial Budget">
+        <h2 class="">Know more about Financial Budget</h2>
+    <!-- This is an A11y Change(Button) -->
+        <button onclick="location.href='https://en.wikipedia.org/wiki/Budget'" type ="button" class="button" aria-label="Know more about budget">Click here</button>
+    </div>
+
+    <!-- This is a Semantic HTML Change(footer) -->
+    <footer>
+        <div class="center">
+            All rights reserved &copy; Fabio Nolasco
+        </div>
+    </footer>
+
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    
+    <script>
+        var data={}
+        var title=[]
+
+        function D3JSChart() {
+            var width = 600
+            height = 500
+            margin = 80
+        
+        var radius = Math.min(width, height) / 2 - margin
+
+        var svg = d3.select("#d3chart")
+        .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+        .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var color = d3.scaleOrdinal()
+        .domain([title])
+        .range(['#ffcd56', '#ff6384', '#36a2eb', '#fd6b19', "#46b535", "#05e2f1", "#552bec"]);
+        
+        var pie = d3.pie()
+        .sort(null) 
+        .value(function(d) {return d.value;})
+        var dataD3JS = pie(d3.entries(data))
+        
+        var arc = d3.arc()
+        .innerRadius(radius * 0.5)         
+        .outerRadius(radius * 0.8)
+        
+        var outerArc = d3.arc()
+        .innerRadius(radius * 0.9)
+        .outerRadius(radius * 0.8)
+        
+        svg
+        .selectAll('allSlices')
+        .data(dataD3JS)
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function(d){ return(color(d.data.key)) })
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("opacity", 1)
+
+        svg
+        .selectAll('allPolyLines')
+        .data(dataD3JS)
+        .enter()
+        .append('polyline')
+            .attr("stroke", "black")
+            .style("fill", "none")
+            .attr("stroke-width", 1)
+            .attr('points', function(d) {
+            var posA = arc.centroid(d) 
+            var posB = outerArc.centroid(d) 
+            var posC = outerArc.centroid(d); 
+            var midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2 
+            posC[0] = radius * 0.97 * (midAngle < Math.PI ? 1 : -1); 
+            return [posA, posB, posC]
+            })
+
+        svg
+        .selectAll('allLabels')
+        .data(dataD3JS)
+        .enter()
+        .append('text')
+            .text( function(d) { return (d.data.key + " ( $" + d.data.value + " )" ) } )
+            .attr('transform', function(d) {
+                var pos = outerArc.centroid(d);
+                var midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                pos[0] = radius * 1.1 * (midAngle < Math.PI ? 1 : -1);
+                return 'translate(' + pos + ')';
+            })
+            .style('text-anchor', function(d) {
+                var midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                return (midAngle < Math.PI ? 'start' : 'end')
+            })
+        }
+
+        function getD3Data(){
+            axios.get('/budget')
+            .then(function(res)
+            {
+                for(var i=0; i<res.data.length;i++){
+                    data[res.data[i].title]=res.data[i].budget;
+                    title[i]=res.data[i].title
+                }
+                D3JSChart();
+            })
+        }
+        getD3Data();
+    </script>
+
+    <script>
+        var dataSource = {
+            datasets: [
+                {
+                    data: [],
+                    backgroundColor: [],
+                }
+            ],
+            labels: []
+        };
+
+        function createChart() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myPieChart = new Chart(ctx,{
+                type:'pie',
+                data:dataSource
+            });
+        }
+
+        function getBudget(){
+            axios.get('/budget')
+            .then(function(res){
+                console.log(res);
+                for(var i=0; i<res.data.length;i++){
+                    // dataSource.datasets[0].data[i]=res.data.data[i].budget;
+                    // dataSource.labels[i]=res.data.data[i].title;
+                    dataSource.labels[i] = res.data[i].title;
+                    dataSource.datasets[0].data[i] = res.data[i].budget;
+                    dataSource.datasets[0].backgroundColor[i]= res.data[i].backgroundColor;
+                }
+                createChart();
+            })
+        }
+        getBudget();
+    </script>
+</body>
+</html>
+
+
+<!-- 
+        dataSource.labels[i] = res.data[i].title;
+        dataSource.datasets[0].data[i] = res.data[i].value;
+        dataSource.datasets[0].backgroundColor[i] = res.data[i].color;
+
+// title:"Eat Out", budget: 25, backgroundColor: "ffcd56"
+// title:"Rent", budget: 380, backgroundColor: "ff6384"
+// title:"Groceries", budget: 90, backgroundColor: "36a2eb"
+// title:"Mobile Charges", budget: 50, backgroundColor: "fd6b19"
+// title:"Subscriptions", budget: 20, backgroundColor: "46b535"
+// title:"Gym Membership", budget: 20, backgroundColor: "05e2f1"
+// title:"Other", budget: 50, backgroundColor: "552bec"
+// '#ffcd56',
+// '#ff6384',
+// '#36a2eb',
+// '#fd6b19',
+// "#46b535",
+// "#05e2f1",
+// "#552bec" -->
